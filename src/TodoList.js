@@ -3,11 +3,14 @@ import { AgGridReact } from'ag-grid-react';
 import'ag-grid-community/dist/styles/ag-grid.css';
 import'ag-grid-community/dist/styles/ag-theme-material.css';
 import {useRef} from 'react';
-import {  BrowserRouter,  Routes,  Route,  Link} from"react-router-dom";
-import Home from './components/Home';
-import Contact from './components/Contact';
-import About from './components/About';
-
+import Button from'@mui/material/Button';
+import TextField from'@mui/material/TextField';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import moment from 'moment';
+import { FormControl, Select } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
+import { Stack } from '@mui/system';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
 
 
@@ -36,6 +39,15 @@ const deleteTodo = () => {
             }
         }
 
+
+
+const dateChanged = (date) => {
+    setDesc({...desc, date})
+}
+
+
+
+
 const columns = [  
     {headerName: 'Description', field: "description", sortable: true, filter: true, floatingFilter: true},
     {headerName: 'Date', field: "date", sortable: true, filter: true, floatingFilter: true},  
@@ -52,28 +64,47 @@ const gridOptions = {
 
 new AgGridReact(gridOptions);
 
-
 return (
+    <Stack spacing={2}>
     <div className='App' >
 
         <form>
-        <input type="text" placeholder='To Do' onChange={inputChanged} name="description" value={desc.description}/>
-        <input type="date" placeholder='Date' onChange={inputChanged} name="date" value={desc.date}/>
-        <input type="text" placeholder='Priority' onChange={inputChanged} name="priority" value={desc.priority}/>
-        <button onClick={addTodo}>Add</button>
-        <button onClick={deleteTodo}>Delete</button>
+        <TextField 
+        type="text" 
+        placeholder='To Do' 
+        onChange={inputChanged} 
+        name="description" 
+        value={desc.description}/>
+        
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+        <DesktopDatePicker
+         label="date"
+         type="date"
+        name="date"
+         value={desc.date}
+         onChange={date => dateChanged(moment(date).format('l'))}
+         renderInput={(params) => <TextField {...params} />}
+         />
+        </LocalizationProvider>
+
+        <FormControl style={{minWidth: 180}}>
+            <Select 
+                label="Priority"
+                value={desc.priority}
+                onChange={inputChanged}
+                name="priority"
+
+                >
+                <MenuItem value={"Low"}>Low</MenuItem>
+                <MenuItem value={"Medium"}>Medium</MenuItem>
+                <MenuItem value={"High"}>High</MenuItem>
+            </Select>
+        </FormControl>
+ 
+        <Button onClick={addTodo} variant="contained">Add</Button>
+        <Button onClick={deleteTodo} variant="contained">Delete</Button>
         </form>
 
-        <BrowserRouter>
-            <Link to="/">Home</Link>{' '}
-            <Link to="/about">About</Link>{' '}
-            <Link to="/contact">Contact</Link>{' '}
-                <Routes>
-                    <Route exactpath="/" element={<Home />} />
-                    <Route path="/about"element={<About />} />
-                    <Route path="/contact"element={<Contact />} />
-                </Routes>
-        </BrowserRouter>
 
         <div className="ag-theme-material">
        
@@ -86,6 +117,7 @@ return (
        </AgGridReact>
         </div>
     </div>
+    </Stack>
     );
 };
 
