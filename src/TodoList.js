@@ -3,6 +3,12 @@ import { AgGridReact } from'ag-grid-react';
 import'ag-grid-community/dist/styles/ag-grid.css';
 import'ag-grid-community/dist/styles/ag-theme-material.css';
 import {useRef} from 'react';
+import {  BrowserRouter,  Routes,  Route,  Link} from"react-router-dom";
+import Home from './components/Home';
+import Contact from './components/Contact';
+import About from './components/About';
+
+
 
 
 
@@ -37,16 +43,19 @@ const columns = [
     cellStyle: params => params.value === "High" ? {color: 'red'} : {color: 'black'}}
 ]
 
+
+
 const gridOptions = {
     animateRows: true
-}
 
+}
 
 new AgGridReact(gridOptions);
 
 
 return (
     <div className='App' >
+
         <form>
         <input type="text" placeholder='To Do' onChange={inputChanged} name="description" value={desc.description}/>
         <input type="date" placeholder='Date' onChange={inputChanged} name="date" value={desc.date}/>
@@ -54,12 +63,23 @@ return (
         <button onClick={addTodo}>Add</button>
         <button onClick={deleteTodo}>Delete</button>
         </form>
-        <div className="ag-theme-material"
-        style={{height: '700px', width: '70%', margin: 'auto'}} >
+
+        <BrowserRouter>
+            <Link to="/">Home</Link>{' '}
+            <Link to="/about">About</Link>{' '}
+            <Link to="/contact">Contact</Link>{' '}
+                <Routes>
+                    <Route exactpath="/" element={<Home />} />
+                    <Route path="/about"element={<About />} />
+                    <Route path="/contact"element={<Contact />} />
+                </Routes>
+        </BrowserRouter>
+
+        <div className="ag-theme-material">
        
        <AgGridReact 
        ref={gridRef}  
-       onGridReady={ params => gridRef.current = params.api }  
+       onGridReady={params => gridRef.current = params.api}
        rowSelection="single"  
        columnDefs={columns}  
        rowData={todos}>

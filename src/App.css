@@ -1,7 +1,18 @@
 .App {
   text-align: center;
-  align-items: center;
 }
+
+.ag-theme-material {
+  height: 700px;
+  width: 70%;
+  margin: auto;
+  text-align: center;
+  position: relative;
+  justify-content: center;
+  align-items: inherit;
+}
+
+
 
 table {
   margin: auto; 
