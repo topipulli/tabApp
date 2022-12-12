@@ -4,6 +4,7 @@ import TodoList from'./TodoList';
 import {  BrowserRouter,  Routes,  Route,  Link} from"react-router-dom";
 import About from './components/About';
 import Contact from './components/Contact';
+import NotFound from './components/NotFound';
 
 function App() {
   return (
@@ -15,9 +16,10 @@ function App() {
             <Link to="/about">About</Link>{' '}
             <Link to="/contact">Contact</Link>{' '}
                 <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/contact" element={<Contact />} />
+                    <Route exact path="/" element={<Home/>} />
+                    <Route path="/about" element={<About/>} />
+                    <Route path="/contact" element={<Contact/>} />
+                    <Route path="*" element={<NotFound/>} />
                 </Routes>
           </BrowserRouter>
         </div>  
@@ -25,6 +27,5 @@ function App() {
         );
     }
 
-  
 
     export default App;
